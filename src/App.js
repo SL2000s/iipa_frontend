@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { getTacticsStatus } from "./services/tacticsService";
 
 function App() {
+  const [tacticsStatus, setTacticsStatus] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const status = await getTacticsStatus();
+      setTacticsStatus(status.status);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Interactive Proof Assistant</h1>
+      <h2>Tactics API Status: {tacticsStatus}</h2>
     </div>
   );
 }
