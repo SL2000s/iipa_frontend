@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';  // Make sure to style accordingly
 import { submitPrompt } from "./services/promptService";
 
@@ -7,6 +7,9 @@ function App() {
   const [output, setOutput] = useState('');
   const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs
   const [chatHistory, setChatHistory] = useState([]);  // State to store chat history
+
+  // Create a ref for the chat history container
+  const chatHistoryRef = useRef(null);
 
   const chooseTactic = (tactic) => {
     if (tactic === 'verifyProof') {
@@ -33,6 +36,13 @@ function App() {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();  // Prevents default Enter behavior (new line)
+      handleSubmit();  // Call the submit function
+    }
+  };
+
   const handleNewChat = () => {
     setChatHistory([]); // Clear chat history
     setInput(''); // Clear input field
@@ -43,6 +53,13 @@ function App() {
     setInput(''); // Clear the input field
   };
 
+  // Effect to scroll to the bottom of the chat history
+  useEffect(() => {
+    if (chatHistoryRef.current) {
+      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+    }
+  }, [chatHistory]); // Runs every time chatHistory changes
+
   return (
     <div className="app-container">
       <div className="title">
@@ -51,7 +68,7 @@ function App() {
       </div>
       <div className="chat-container">
         {/* Chat History */}
-        <div className="chat-history">
+        <div className="chat-history" ref={chatHistoryRef}>
           <ul>
             {chatHistory.map((chat, index) => (
               <li key={index} className="chat-message">
@@ -72,6 +89,7 @@ function App() {
             className="input-textarea"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Enter your message..."
           />
           <button onClick={handleSubmit}>Send</button>
