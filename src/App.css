@@ -61,7 +61,7 @@
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
-  max-height: 500px;
+  max-height: 700px;
 }
 
 /* Chat history section */
@@ -147,4 +147,60 @@ button:hover {
 .kb-viewer ul {
   list-style-type: none;
   padding: 0;
+}
+
+
+.command-menu {
+  margin-top: 10px;
+}
+
+.command-menu button {
+  padding: 10px;
+  /* background-color: #28a745; */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  margin-right: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.command-menu button:hover {
+  /* background-color: #218838; */
+  background-color: #0056b3;
+}
+
+.new-chat-button {
+  margin-top: 10px;
+}
+
+.new-chat-button button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-chat-button button:hover {
+  background-color: #0056b3;
+}
+
+/* New chat */
+.new-chat-button {
+  margin-top: 10px;
+}
+
+.new-chat-button button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-chat-button button:hover {
+  background-color: #0056b3;
 }

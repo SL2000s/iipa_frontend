@@ -33,11 +33,14 @@ function App() {
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();  // Prevents default Enter behavior (new line)
-      handleSubmit();  // Call the submit function
-    }
+  const handleNewChat = () => {
+    setChatHistory([]); // Clear chat history
+    setInput(''); // Clear input field
+    setOutput(''); // Clear output field
+  };
+
+  const handleClearInput = () => {
+    setInput(''); // Clear the input field
   };
 
   return (
@@ -69,20 +72,27 @@ function App() {
             className="input-textarea"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}  // Capture Enter and Shift+Enter key presses
             placeholder="Enter your message..."
           />
           <button onClick={handleSubmit}>Send</button>
         </div>
-      </div>
 
-      <div className="command-menu">
-        <h3>Tactics</h3>
-        <button onClick={() => chooseTactic('verifyProof')}>Verify Proof</button>
-        <button onClick={() => chooseTactic('expandAssumptions')}>Expand Assumptions</button>
-        <button onClick={() => chooseTactic('prove')}>Prove Statement</button>
-        <button onClick={() => chooseTactic('getPremises')}>Get Premises</button>
-        <button onClick={() => chooseTactic('addToKB')}>Add to KB</button>
+        {/* Tactics Buttons */}
+        <div className="command-menu">
+          <div className="tactics-buttons">
+            <button onClick={() => chooseTactic('verifyProof')}>Verify Proof</button>
+            <button onClick={() => chooseTactic('expandAssumptions')}>Expand Assumptions</button>
+            <button onClick={() => chooseTactic('prove')}>Prove Statement</button>
+            <button onClick={() => chooseTactic('getPremises')}>Get Premises</button>
+            <button onClick={() => chooseTactic('addToKB')}>Add to KB</button>
+            {/* <button onClick={handleClearInput}>Clear</button> */}
+          </div>
+        </div>
+
+        {/* New Chat Button */}
+        {/* <div className="new-chat-button">
+          <button onClick={handleNewChat}>New Chat</button>
+        </div> */}
       </div>
 
       <div className="kb-viewer">
