@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './App.css';  // Make sure to style accordingly
+import './App.css';
 import { submitPrompt } from "./services/promptService";
 
 function App() {
