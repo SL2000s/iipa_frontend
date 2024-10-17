@@ -33,6 +33,13 @@ function App() {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();  // Prevents default Enter behavior (new line)
+      handleSubmit();  // Call the submit function
+    }
+  };
+
   return (
     <div className="app-container">
       <div className="title">
@@ -62,6 +69,7 @@ function App() {
             className="input-textarea"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}  // Capture Enter and Shift+Enter key presses
             placeholder="Enter your message..."
           />
           <button onClick={handleSubmit}>Send</button>
