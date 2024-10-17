@@ -12,7 +12,7 @@ function App() {
 
   const chooseTactic = (tactic) => {
     if (tactic === 'verifyEntailment') {
-      setInput('Verify that p_1 follows from p_0.\n\np_0: UNDEFINED\np_1: UNDEFINED');
+      setInput('Verify that p_j follows from p_i.\n\np_i: UNDEFINED\np_j: UNDEFINED');
     } else if (tactic === 'expandAssumptions') {
       setInput('Given a statement p_i expand the implied definitions and assumptions by formally');
     }
