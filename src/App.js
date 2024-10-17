@@ -11,8 +11,8 @@ function App() {
   const chatHistoryRef = useRef(null);
 
   const chooseTactic = (tactic) => {
-    if (tactic === 'verifyProof') {
-      setInput('Given two statements p_i and p_j verify if the entailment between the two statements are logically consistent and sound by formally');
+    if (tactic === 'verifyEntailment') {
+      setInput('Verify that p_1 follows from p_0.\n\np_0: UNDEFINED\np_1: UNDEFINED');
     } else if (tactic === 'expandAssumptions') {
       setInput('Given a statement p_i expand the implied definitions and assumptions by formally');
     }
@@ -90,11 +90,11 @@ function App() {
         {/* Tactics Buttons */}
         <div className="command-menu">
           <div className="tactics-buttons">
-            <button onClick={() => chooseTactic('verifyProof')}>Verify Proof</button>
-            <button onClick={() => chooseTactic('expandAssumptions')}>Expand Assumptions</button>
-            <button onClick={() => chooseTactic('prove')}>Prove Statement</button>
-            <button onClick={() => chooseTactic('getPremises')}>Get Premises</button>
-            <button onClick={() => chooseTactic('addToKB')}>Add to KB</button>
+            <button onClick={() => chooseTactic('verifyEntailment')}>Verify Entailment</button>
+            {/* <button onClick={() => chooseTactic('expandAssumptions')}>Expand Assumptions</button> */}
+            {/* <button onClick={() => chooseTactic('prove')}>Prove Statement</button> */}
+            {/* <button onClick={() => chooseTactic('getPremises')}>Get Premises</button> */}
+            {/* <button onClick={() => chooseTactic('addToKB')}>Add to KB</button> */}
             {/* <button onClick={handleClearInput}>Clear</button> */}
           </div>
         </div>
