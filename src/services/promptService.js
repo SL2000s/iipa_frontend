@@ -2,10 +2,11 @@ import axios from 'axios';
 
 const API_URL = "http://127.0.0.1:8000";  // FastAPI backend URL  // TODO: don't hardcode
 
-export const submitPrompt = async (prompt) => {
+export const submitPrompt = async (prompt, history) => {
   try {
     const response = await axios.post(`${API_URL}/submit_prompt/`, {
-      prompt: prompt
+      prompt: prompt,
+      history: history,
     });
     return response.data;
   } catch (error) {
