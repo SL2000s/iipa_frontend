@@ -4,8 +4,7 @@ import { submitPrompt } from "./services/promptService";
 
 function App() {
   const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
-  const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs
+  const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs   // TODO: remove
   const [chatHistory, setChatHistory] = useState([]);  // State to store chat history
 
   // Create a ref for the chat history container
@@ -21,18 +20,12 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    setOutput('Processing prompt...');
     try {
-      const response = await submitPrompt(input);  // Wait for the Promise to resolve
-      setOutput(`Answer\n: ${response.answer}`);
-
-      // Add the current prompt and response to the chat history
+      const response = await submitPrompt(input, chatHistory);  // Wait for the Promise to resolve
       setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
-
-      // Clear the input field after submission
       setInput('');
     } catch (error) {
-      setOutput('Error while processing the prompt.');
+      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);  // TODO: pop-up message instead of adding to history
     }
   };
 
@@ -44,9 +37,8 @@ function App() {
   };
 
   const handleNewChat = () => {
-    setChatHistory([]); // Clear chat history
-    setInput(''); // Clear input field
-    setOutput(''); // Clear output field
+    setChatHistory([]);
+    setInput('');
   };
 
   const handleClearInput = () => {
