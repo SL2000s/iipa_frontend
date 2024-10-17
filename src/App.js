@@ -56,7 +56,7 @@ function App() {
     <div className="app-container">
       <div className="title">
         <h1>Informal Interactive Proof Assistant</h1>
-        <p>Enter your statements and select a tactic to assist in your proof.</p>
+        <p>Enter your question to the proof assistent.</p>
       </div>
       <div className="chat-container">
         {/* Chat History */}
