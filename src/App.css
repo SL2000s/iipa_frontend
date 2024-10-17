@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.input-textarea {
+  width: 100%;         /* Full width of the parent container */
+  height: 150px;       /* Increase height */
+  font-size: 16px;     /* Increase font size */
+  padding: 10px;       /* Add some padding for spacing */
+  border-radius: 5px;  /* Optional: rounded corners */
+  border: 1px solid #ccc; /* Optional: border styling */
+  box-sizing: border-box; /* Ensures padding is included in the total width */
+  resize: vertical;    /* Allows users to resize vertically but not horizontally */
+}
