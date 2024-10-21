@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { submitPrompt } from "./services/promptService";
+import MathJax from 'react-mathjax2'; // Using the react-mathjax2 wrapper
 
 function App() {
   const [input, setInput] = useState('');
-  const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs   // TODO: remove
+  const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs
   const [chatHistory, setChatHistory] = useState([]);  // State to store chat history
 
   // Create a ref for the chat history container
@@ -56,7 +57,7 @@ function App() {
     <div className="app-container">
       <div className="title">
         <h1>Informal Interactive Proof Assistant</h1>
-        <p>Enter your question to the proof assistent.</p>
+        <p>Enter your question to the proof assistant.</p>
       </div>
       <div className="chat-container">
         {/* Chat History */}
@@ -68,7 +69,9 @@ function App() {
                   <strong>You:</strong> {chat.prompt}
                 </div>
                 <div className="response-bubble">
-                  <strong>Assistant:</strong> {chat.answer}
+                  <strong>Assistant:</strong> <MathJax.Context input='tex'>
+                    <MathJax.Text text={chat.answer} />
+                  </MathJax.Context>
                 </div>
               </li>
             ))}
