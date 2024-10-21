@@ -115,6 +115,11 @@ function App() {
             disabled={isLoading}  // Disable input while loading
           />
           <button onClick={handleSubmit} disabled={isLoading}>Send</button>
+          {isLoading && (
+              <div className="loading-spinner">
+                <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
+              </div>
+          )}
         </div>
 
         {/* Loading Spinner */}
