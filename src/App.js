@@ -64,7 +64,7 @@ function App() {
   const preprocessLatex = (text) => {
     // Replace block-level LaTeX delimiters \[ \] with $$ $$
     const blockProcessedContent = text.replace(
-      /\\\[(.*?)\\\]/gs,
+      /\\n*\\\[\\n*(.*?)\\n*\\\]\\n*/gs,
       (_, equation) => `\n$$${equation}$$\n`,
     );
     // Replace inline LaTeX delimiters \( \) with $ $
