@@ -4,11 +4,13 @@ import { submitPrompt } from "./services/promptService";
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import ClipLoader from "react-spinners/ClipLoader";  // Import the ClipLoader spinner
 
 function App() {
   const [input, setInput] = useState('');
   const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs
   const [chatHistory, setChatHistory] = useState([]);  // State to store chat history
+  const [isLoading, setIsLoading] = useState(false);  // New state to track loading
 
   // Create a ref for the chat history container
   const chatHistoryRef = useRef(null);
@@ -23,6 +25,9 @@ function App() {
   };
 
   const handleSubmit = async () => {
+    if (input.trim() === "") return; // Prevent empty submissions
+
+    setIsLoading(true);  // Start loading before making API call
     try {
       const response = await submitPrompt(input, chatHistory);  // Wait for the Promise to resolve
       setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
@@ -30,6 +35,7 @@ function App() {
     } catch (error) {
       setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);  // TODO: pop-up message instead of adding to history
     }
+    setIsLoading(false);  // Stop loading once the response is received or error occurs
   };
 
   const handleKeyDown = (event) => {
@@ -106,26 +112,24 @@ function App() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Enter your message..."
+            disabled={isLoading}  // Disable input while loading
           />
-          <button onClick={handleSubmit}>Send</button>
+          <button onClick={handleSubmit} disabled={isLoading}>Send</button>
         </div>
+
+        {/* Loading Spinner */}
+        {isLoading && (
+          <div className="loading-spinner">
+            <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
+          </div>
+        )}
 
         {/* Tactics Buttons */}
         <div className="command-menu">
           <div className="tactics-buttons">
-            <button onClick={() => chooseTactic('verifyEntailment')}>Verify Entailment</button>
-            {/* <button onClick={() => chooseTactic('expandAssumptions')}>Expand Assumptions</button> */}
-            {/* <button onClick={() => chooseTactic('prove')}>Prove Statement</button> */}
-            {/* <button onClick={() => chooseTactic('getPremises')}>Get Premises</button> */}
-            {/* <button onClick={() => chooseTactic('addToKB')}>Add to KB</button> */}
-            {/* <button onClick={handleClearInput}>Clear</button> */}
+            <button onClick={() => chooseTactic('verifyEntailment')} disabled={isLoading}>Verify Entailment</button>
           </div>
         </div>
-
-        {/* New Chat Button */}
-        {/* <div className="new-chat-button">
-          <button onClick={handleNewChat}>New Chat</button>
-        </div> */}
       </div>
 
       <div className="kb-viewer">
