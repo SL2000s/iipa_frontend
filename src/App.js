@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { submitPrompt } from "./services/promptService";
-import MathJax from 'react-mathjax2'; // Using the react-mathjax2 wrapper
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 function App() {
   const [input, setInput] = useState('');
@@ -53,6 +55,20 @@ function App() {
     }
   }, [chatHistory]); // Runs every time chatHistory changes
 
+  const preprocessLatex = (text) => {
+    // Replace block-level LaTeX delimiters \[ \] with $$ $$
+    const blockProcessedContent = text.replace(
+      /\\\[(.*?)\\\]/gs,
+      (_, equation) => `\n$$${equation}$$\n`,
+    );
+    // Replace inline LaTeX delimiters \( \) with $ $
+    const inlineProcessedContent = blockProcessedContent.replace(
+      /\\\((.*?)\\\)/gs,
+      (_, equation) => `$${equation}$`,
+    );
+    return inlineProcessedContent;
+  };
+
   return (
     <div className="app-container">
       <div className="title">
@@ -69,9 +85,13 @@ function App() {
                   <strong>You:</strong> {chat.prompt}
                 </div>
                 <div className="response-bubble">
-                  <strong>Assistant:</strong> <MathJax.Context input='tex'>
-                    <MathJax.Text text={chat.answer} />
-                  </MathJax.Context>
+                  <strong>Assistant:</strong>
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkMath]} 
+                    rehypePlugins={[rehypeKatex]}
+                  >
+                    {preprocessLatex(chat.answer)}
+                  </ReactMarkdown>
                 </div>
               </li>
             ))}
