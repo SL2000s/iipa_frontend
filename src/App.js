@@ -19,9 +19,10 @@ function App() {
     if (tactic === 'verifyEntailment') {
       setInput('Verify that p_j follows from p_i.\n\np_i: UNDEFINED\np_j: UNDEFINED');
     } else if (tactic === 'expandAssumptions') {
-      setInput('Given a statement p_i expand the implied definitions and assumptions by formally');
-    }
-    // TODO: Implement other tactics similarly
+      setInput('Expand the implied definitions and assumptions from p_i.\n\np_i: UNDEFINED');
+    } else if (tactic === 'verifyStatement')
+      setInput('Is p_i correct?\n\np_i: UNDEFINED');
+      // TODO: Implement other tactics similarly
   };
 
   const handleSubmit = async () => {
@@ -132,7 +133,9 @@ function App() {
         {/* Tactics Buttons */}
         <div className="command-menu">
           <div className="tactics-buttons">
+            <button onClick={() => chooseTactic('expandAssumptions')} disabled={isLoading}>Expand Assumptions</button>
             <button onClick={() => chooseTactic('verifyEntailment')} disabled={isLoading}>Verify Entailment</button>
+            <button onClick={() => chooseTactic('verifyStatement')} disabled={isLoading}>Verify Statement</button>
           </div>
         </div>
       </div>
