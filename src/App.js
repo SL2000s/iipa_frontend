@@ -27,7 +27,7 @@ function App() {
     } else if (tactic === 'proveWithinContext') {
       setInput('Prove p_i given the context P_i.\n\np_i: UNDEFINED\nP_i: UNDEFINED');
     } else if (tactic === 'premisesRetrieval') {
-      setInput('Create a list of all premises related to s')
+      setInput('Create a list of all premises related to s_i.\n\ns_i: UNDEFINED')
     }
   };
 
