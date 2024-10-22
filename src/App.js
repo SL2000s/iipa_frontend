@@ -26,6 +26,8 @@ function App() {
       setInput('Prove p_i.\n\np_i: UNDEFINED');
     } else if (tactic === 'proveWithinContext') {
       setInput('Prove p_i given the context P_i.\n\np_i: UNDEFINED\nP_i: UNDEFINED');
+    } else if (tactic === 'premisesRetrieval') {
+      setInput('Create a list of all premises related to s')
     }
   };
 
@@ -137,9 +139,10 @@ function App() {
         {/* Tactics Buttons */}
         <div className="command-menu">
           <div className="tactics-buttons">
-            <button onClick={() => chooseTactic('expandAssumptions')} disabled={isLoading}>Expand Assumptions</button>
+            <button onClick={() => chooseTactic('expandAssumptions')} disabled={isLoading}>Get Assumptions</button>
             <button onClick={() => chooseTactic('prove')} disabled={isLoading}>Prove</button>
             <button onClick={() => chooseTactic('proveWithinContext')} disabled={isLoading}>Prove In Context</button>
+            <button onClick={() => chooseTactic('premisesRetrieval')} disabled={isLoading}>Search Premises</button>
             <button onClick={() => chooseTactic('verifyEntailment')} disabled={isLoading}>Verify Entailment</button>
             <button onClick={() => chooseTactic('verifyStatement')} disabled={isLoading}>Verify Statement</button>
           </div>
