@@ -4,15 +4,14 @@ import { submitPrompt } from "./services/promptService";
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import ClipLoader from "react-spinners/ClipLoader";  // Import the ClipLoader spinner
+import ClipLoader from "react-spinners/ClipLoader";  
 
 function App() {
   const [input, setInput] = useState('');
-  const [kb, setKb] = useState([]);  // Knowledge Base will be a list of premises or proofs
-  const [chatHistory, setChatHistory] = useState([]);  // State to store chat history
-  const [isLoading, setIsLoading] = useState(false);  // New state to track loading
-
-  // Create a ref for the chat history container
+  const [kb, setKb] = useState(['lm_theory', 'number_theory', 'geometry']);  // List of KBs
+  const [selectedKb, setSelectedKb] = useState('lm_theory');  // Active KB
+  const [chatHistory, setChatHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const chatHistoryRef = useRef(null);
 
   const chooseTactic = (tactic) => {
@@ -32,23 +31,23 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    if (input.trim() === "") return; // Prevent empty submissions
+    if (input.trim() === "") return; 
 
-    setIsLoading(true);  // Start loading before making API call
+    setIsLoading(true);  
     try {
-      const response = await submitPrompt(input, chatHistory);  // Wait for the Promise to resolve
+      const response = await submitPrompt(input, chatHistory);  
       setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
       setInput('');
     } catch (error) {
-      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);  // TODO: pop-up message instead of adding to history
+      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);
     }
-    setIsLoading(false);  // Stop loading once the response is received or error occurs
+    setIsLoading(false);  
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();  // Prevents default Enter behavior (new line)
-      handleSubmit();  // Call the submit function
+      event.preventDefault();  
+      handleSubmit();  
     }
   };
 
@@ -58,23 +57,24 @@ function App() {
   };
 
   const handleClearInput = () => {
-    setInput(''); // Clear the input field
+    setInput('');
   };
 
-  // Effect to scroll to the bottom of the chat history
+  const handleKbSelect = (kbName) => {
+    setSelectedKb(kbName);  // Update selected KB
+  };
+
   useEffect(() => {
     if (chatHistoryRef.current) {
       chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }
-  }, [chatHistory]); // Runs every time chatHistory changes
+  }, [chatHistory]); 
 
   const preprocessLatex = (text) => {
-    // Replace block-level LaTeX delimiters \[ \] with $$ $$
     const blockProcessedContent = text.replace(
       /\\\[[\s\n]*(.*?)[\s\n]*\\\]/gs,
       (_, equation) => `\n$$${equation}$$\n`,
     );
-    // Replace inline LaTeX delimiters \( \) with $ $
     const inlineProcessedContent = blockProcessedContent.replace(
       /\\\((.*?)\\\)/gs,
       (_, equation) => `$${equation}$`,
@@ -84,12 +84,29 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="title">
-        <h1>Informal Interactive Proof Assistant</h1>
-        <p>Enter your question to the proof assistant.</p>
+      
+      {/* KB Viewer */}
+      <div className="kb-viewer">
+        {/* <h1><a href="/">IIPA</a></h1> */}
+        <h3>Selected KB</h3>
+        
+          {kb.map((item, index) => (
+            <p 
+              key={index} 
+              className={`kb-item ${selectedKb === item ? 'active' : ''}`} 
+              onClick={() => handleKbSelect(item)}
+            >
+              {item}
+            </p>
+          ))}
       </div>
+
+      {/* Chat Area */}
       <div className="chat-container">
-        {/* Chat History */}
+        <div className="title">
+          <h1>Informal Interactive Proof Assistant</h1>
+        </div>
+
         <div className="chat-history" ref={chatHistoryRef}>
           <ul>
             {chatHistory.map((chat, index) => (
@@ -111,7 +128,6 @@ function App() {
           </ul>
         </div>
 
-        {/* Input Area */}
         <div className="input-area">
           <textarea
             className="input-textarea"
@@ -119,24 +135,16 @@ function App() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Enter your message..."
-            disabled={isLoading}  // Disable input while loading
+            disabled={isLoading}  
           />
           <button onClick={handleSubmit} disabled={isLoading}>Send</button>
           {isLoading && (
-              <div className="loading-spinner">
-                <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
-              </div>
+            <div className="loading-spinner">
+              <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
+            </div>
           )}
         </div>
 
-        {/* Loading Spinner */}
-        {isLoading && (
-          <div className="loading-spinner">
-            <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
-          </div>
-        )}
-
-        {/* Tactics Buttons */}
         <div className="command-menu">
           <div className="tactics-buttons">
             <button onClick={() => chooseTactic('expandAssumptions')} disabled={isLoading}>Get Assumptions</button>
@@ -147,15 +155,6 @@ function App() {
             <button onClick={() => chooseTactic('verifyStatement')} disabled={isLoading}>Verify Statement</button>
           </div>
         </div>
-      </div>
-
-      <div className="kb-viewer">
-        <h3>Knowledge Base</h3>
-        <ul>
-          {kb.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
       </div>
     </div>
   );

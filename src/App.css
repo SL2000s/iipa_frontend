@@ -46,20 +46,20 @@
 /* General layout */
 .app-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  height: 100vh;
 }
 
 .chat-container {
   width: 60%;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 0px;
   padding: 10px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
+  background-color: #fdfdfd;
   display: flex;
   flex-direction: column;
-  max-height: 700px;
+  flex: 1;
+  display: flex;
 }
 
 /* Chat history section */
@@ -110,6 +110,7 @@
   height: 120px;
   font-size: 16px;
   resize: vertical; /* Allows users to resize vertically but not horizontally */
+  /* background-color: #f9f9f9; */
 }
 
 .loading-spinner {
@@ -144,15 +145,37 @@ button:hover {
   margin-bottom: 10px;
 }
 
-/* Knowledge base viewer */
+
+/* KB panel */
 .kb-viewer {
-  margin-top: 20px;
-  width: 60%;
+  width: 250px;
+  border-right: 1px solid #bbb;
+  background-color: #f0f0f0;
+  padding: 20px;
+  overflow-y: auto;
 }
 
-.kb-viewer ul {
-  list-style-type: none;
-  padding: 0;
+.kb-item {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f0f0f0;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.kb-item:hover {
+  background-color: #e0e0e0;
+}
+
+.kb-item {
+  margin: 5px;
+  padding: 5px;
+}
+
+.kb-item.active {
+  background-color: #e0e0e0;
+  font-weight: bold;
 }
 
 /* New chat button */
