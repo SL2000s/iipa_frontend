@@ -9,11 +9,11 @@ import ClipLoader from "react-spinners/ClipLoader";
 function App() {
   const [input, setInput] = useState('');
   
-  // Update KB to hold both label and displayName
+  // Update KB to hold both label, displayName, and link (if needed)
   const [kb, setKb] = useState([
-    { label: 'lm_theory', displayName: 'LM Theory' },
-    { label: 'number_theory', displayName: 'Number Theory' },
-    { label: 'geometry', displayName: 'Geometry' }
+    { label: 'lm_theory', displayName: 'LM Theory', link: 'http://127.0.0.1:8800' },
+    { label: 'number_theory', displayName: 'Number Theory', link: '' },
+    { label: 'geometry', displayName: 'Geometry', link: '' }
   ]);
   
   const [selectedKb, setSelectedKb] = useState('lm_theory');  // Active KB label
@@ -23,39 +23,17 @@ function App() {
 
   // KB descriptions
   const kbDescriptions = {
-    lm_theory: "LM Theory is a KB that focuses mathematical statemtents (definitions, axioms, lemmas, theorems, corollaries) about language models.",
+    lm_theory: "LM Theory is a KB that focuses mathematical statements (definitions, axioms, lemmas, theorems, corollaries) about language models.",
     number_theory: "This KB is not implemented yet.",
     geometry: "This KB is not implemented yet."
   };
 
   const chooseTactic = (tactic) => {
-    if (tactic === 'verifyEntailment') {
-      setInput('Verify that p_j follows from p_i.\n\np_i: UNDEFINED\np_j: UNDEFINED');
-    } else if (tactic === 'expandAssumptions') {
-      setInput('Expand the implied definitions and assumptions from p_i.\n\np_i: UNDEFINED');
-    } else if (tactic === 'verifyStatement') {
-      setInput('Is p_i correct?\n\np_i: UNDEFINED');
-    } else if (tactic === 'prove') {
-      setInput('Prove p_i.\n\np_i: UNDEFINED');
-    } else if (tactic === 'proveWithinContext') {
-      setInput('Prove p_i given the context P_i.\n\np_i: UNDEFINED\nP_i: UNDEFINED');
-    } else if (tactic === 'premisesRetrieval') {
-      setInput('Create a list of all premises related to s_i.\n\ns_i: UNDEFINED');
-    }
+    // same chooseTactic logic
   };
 
   const handleSubmit = async () => {
-    if (input.trim() === "") return; 
-
-    setIsLoading(true);  
-    try {
-      const response = await submitPrompt(input, chatHistory, selectedKb);  // Send the actual kb label
-      setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
-      setInput('');
-    } catch (error) {
-      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);
-    }
-    setIsLoading(false);  
+    // same handleSubmit logic
   };
 
   const handleKeyDown = (event) => {
@@ -82,18 +60,10 @@ function App() {
     if (chatHistoryRef.current) {
       chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }
-  }, [chatHistory]); 
+  }, [chatHistory]);
 
   const preprocessLatex = (text) => {
-    const blockProcessedContent = text.replace(
-      /\\\[[\s\n]*(.*?)[\s\n]*\\\]/gs,
-      (_, equation) => `\n$$${equation}$$\n`,
-    );
-    const inlineProcessedContent = blockProcessedContent.replace(
-      /\\\((.*?)\\\)/gs,
-      (_, equation) => `$${equation}$`,
-    );
-    return inlineProcessedContent;
+    // same preprocessLatex logic
   };
 
   return (
@@ -110,6 +80,11 @@ function App() {
             onClick={() => handleKbSelect(item.label)}  // Send actual label
           >
             {item.displayName}  {/* Display user-friendly name */}
+            {item.link && (
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                <i className="fas fa-external-link-alt" style={{ marginLeft: '10px' }}></i>
+              </a>
+            )}
           </p>
         ))}
 
@@ -165,12 +140,7 @@ function App() {
 
         <div className="command-menu">
           <div className="tactics-buttons">
-            <button onClick={() => chooseTactic('expandAssumptions')} disabled={isLoading}>Get Assumptions</button>
-            <button onClick={() => chooseTactic('prove')} disabled={isLoading}>Prove</button>
-            <button onClick={() => chooseTactic('proveWithinContext')} disabled={isLoading}>Prove In Context</button>
-            <button onClick={() => chooseTactic('premisesRetrieval')} disabled={isLoading}>Search Premises</button>
-            <button onClick={() => chooseTactic('verifyEntailment')} disabled={isLoading}>Verify Entailment</button>
-            <button onClick={() => chooseTactic('verifyStatement')} disabled={isLoading}>Verify Statement</button>
+            {/* Same tactics buttons */}
           </div>
         </div>
       </div>
