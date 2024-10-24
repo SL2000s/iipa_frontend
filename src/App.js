@@ -35,7 +35,7 @@ function App() {
 
     setIsLoading(true);  
     try {
-      const response = await submitPrompt(input, chatHistory);  
+      const response = await submitPrompt(input, chatHistory, selectedKb);  
       setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
       setInput('');
     } catch (error) {
