@@ -8,8 +8,15 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 function App() {
   const [input, setInput] = useState('');
-  const [kb, setKb] = useState(['lm_theory', 'number_theory', 'geometry']);  // List of KBs
-  const [selectedKb, setSelectedKb] = useState('lm_theory');  // Active KB
+  
+  // Update KB to hold both label and displayName
+  const [kb, setKb] = useState([
+    { label: 'lm_theory', displayName: 'LM Theory' },
+    { label: 'number_theory', displayName: 'Number Theory' },
+    { label: 'geometry', displayName: 'Geometry' }
+  ]);
+  
+  const [selectedKb, setSelectedKb] = useState('lm_theory');  // Active KB label
   const [chatHistory, setChatHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const chatHistoryRef = useRef(null);
@@ -42,7 +49,7 @@ function App() {
 
     setIsLoading(true);  
     try {
-      const response = await submitPrompt(input, chatHistory, selectedKb);  
+      const response = await submitPrompt(input, chatHistory, selectedKb);  // Send the actual kb label
       setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
       setInput('');
     } catch (error) {
@@ -67,8 +74,8 @@ function App() {
     setInput('');
   };
 
-  const handleKbSelect = (kbName) => {
-    setSelectedKb(kbName);  // Update selected KB
+  const handleKbSelect = (kbLabel) => {
+    setSelectedKb(kbLabel);  // Update selected KB to the actual label
   };
 
   useEffect(() => {
@@ -99,10 +106,10 @@ function App() {
         {kb.map((item, index) => (
           <p 
             key={index} 
-            className={`kb-item ${selectedKb === item ? 'active' : ''}`} 
-            onClick={() => handleKbSelect(item)}
+            className={`kb-item ${selectedKb === item.label ? 'active' : ''}`} 
+            onClick={() => handleKbSelect(item.label)}  // Send actual label
           >
-            {item}
+            {item.displayName}  {/* Display user-friendly name */}
           </p>
         ))}
 
