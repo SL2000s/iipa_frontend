@@ -14,6 +14,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const chatHistoryRef = useRef(null);
 
+  // KB descriptions
+  const kbDescriptions = {
+    lm_theory: "LM Theory is a KB that focuses mathematical statemtents (definitions, axioms, lemmas, theorems, corollaries) about language models.",
+    number_theory: "This KB is not implemented yet.",
+    geometry: "This KB is not implemented yet."
+  };
+
   const chooseTactic = (tactic) => {
     if (tactic === 'verifyEntailment') {
       setInput('Verify that p_j follows from p_i.\n\np_i: UNDEFINED\np_j: UNDEFINED');
@@ -26,7 +33,7 @@ function App() {
     } else if (tactic === 'proveWithinContext') {
       setInput('Prove p_i given the context P_i.\n\np_i: UNDEFINED\nP_i: UNDEFINED');
     } else if (tactic === 'premisesRetrieval') {
-      setInput('Create a list of all premises related to s_i.\n\ns_i: UNDEFINED')
+      setInput('Create a list of all premises related to s_i.\n\ns_i: UNDEFINED');
     }
   };
 
@@ -87,18 +94,22 @@ function App() {
       
       {/* KB Viewer */}
       <div className="kb-viewer">
-        {/* <h1><a href="/">IIPA</a></h1> */}
-        <h3>Selected KB</h3>
+        <h3>Select KB</h3>
         
-          {kb.map((item, index) => (
-            <p 
-              key={index} 
-              className={`kb-item ${selectedKb === item ? 'active' : ''}`} 
-              onClick={() => handleKbSelect(item)}
-            >
-              {item}
-            </p>
-          ))}
+        {kb.map((item, index) => (
+          <p 
+            key={index} 
+            className={`kb-item ${selectedKb === item ? 'active' : ''}`} 
+            onClick={() => handleKbSelect(item)}
+          >
+            {item}
+          </p>
+        ))}
+
+        {/* KB Description */}
+        <div className="kb-description">
+          <p><i>{kbDescriptions[selectedKb]}</i></p>
+        </div>
       </div>
 
       {/* Chat Area */}
