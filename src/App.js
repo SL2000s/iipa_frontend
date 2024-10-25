@@ -29,11 +29,32 @@ function App() {
   };
 
   const chooseTactic = (tactic) => {
-    // same chooseTactic logic
+    if (tactic === 'verifyEntailment') {
+      setInput('Verify that p_j follows from p_i.\n\np_i: UNDEFINED\np_j: UNDEFINED');
+    } else if (tactic === 'expandAssumptions') {
+      setInput('Expand the implied definitions and assumptions from p_i.\n\np_i: UNDEFINED');
+    } else if (tactic === 'verifyStatement') {
+      setInput('Is p_i correct?\n\np_i: UNDEFINED');
+    } else if (tactic === 'prove') {
+      setInput('Prove p_i.\n\np_i: UNDEFINED');
+    } else if (tactic === 'proveWithinContext') {
+      setInput('Prove p_i given the context P_i.\n\np_i: UNDEFINED\nP_i: UNDEFINED');
+    } else if (tactic === 'premisesRetrieval') {
+      setInput('Create a list of all premises related to s_i.\n\ns_i: UNDEFINED');
+    }
   };
 
   const handleSubmit = async () => {
-    // same handleSubmit logic
+    if (input.trim() === "") return; 
+    setIsLoading(true);  
+    try {
+      const response = await submitPrompt(input, chatHistory, selectedKb);  // Send the actual kb label
+      setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
+      setInput('');
+    } catch (error) {
+      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);
+    }
+    setIsLoading(false);  
   };
 
   const handleKeyDown = (event) => {
@@ -63,7 +84,15 @@ function App() {
   }, [chatHistory]);
 
   const preprocessLatex = (text) => {
-    // same preprocessLatex logic
+    const blockProcessedContent = text.replace(
+      /\\\[[\s\n]*(.*?)[\s\n]*\\\]/gs,
+      (_, equation) => `\n$$\n${equation}\n$$\n`,
+    );
+    const inlineProcessedContent = blockProcessedContent.replace(
+      /\\\((.*?)\\\)/gs,
+      (_, equation) => `$${equation}$`,
+    );
+    return inlineProcessedContent;
   };
 
   return (
@@ -140,7 +169,12 @@ function App() {
 
         <div className="command-menu">
           <div className="tactics-buttons">
-            {/* Same tactics buttons */}
+            <button onClick={() => chooseTactic('expandAssumptions')} disabled={isLoading}>Get Assumptions</button>
+            <button onClick={() => chooseTactic('prove')} disabled={isLoading}>Prove</button>
+            <button onClick={() => chooseTactic('proveWithinContext')} disabled={isLoading}>Prove In Context</button>
+            <button onClick={() => chooseTactic('premisesRetrieval')} disabled={isLoading}>Search Premises</button>
+            <button onClick={() => chooseTactic('verifyEntailment')} disabled={isLoading}>Verify Entailment</button>
+            <button onClick={() => chooseTactic('verifyStatement')} disabled={isLoading}>Verify Statement</button>
           </div>
         </div>
       </div>
