@@ -5,23 +5,21 @@ import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import ClipLoader from "react-spinners/ClipLoader";  
+import { FaCopy } from "react-icons/fa";
 
 function App() {
   const [input, setInput] = useState('');
-  
-  // Update KB to hold both label, displayName, and link (if needed)
   const [kb, setKb] = useState([
     { label: 'lm_theory', displayName: 'LM Theory', link: 'http://127.0.0.1:8800' },
     { label: 'number_theory', displayName: 'Number Theory', link: '' },
     { label: 'geometry', displayName: 'Geometry', link: '' }
   ]);
   
-  const [selectedKb, setSelectedKb] = useState('lm_theory');  // Active KB label
+  const [selectedKb, setSelectedKb] = useState('lm_theory');
   const [chatHistory, setChatHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const chatHistoryRef = useRef(null);
 
-  // KB descriptions
   const kbDescriptions = {
     lm_theory: "LM Theory is a KB that focuses mathematical statements (definitions, axioms, lemmas, theorems, corollaries) about language models.",
     number_theory: "This KB is not implemented yet.",
@@ -48,7 +46,7 @@ function App() {
     if (input.trim() === "") return; 
     setIsLoading(true);  
     try {
-      const response = await submitPrompt(input, chatHistory, selectedKb);  // Send the actual kb label
+      const response = await submitPrompt(input, chatHistory, selectedKb);
       setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
       setInput('');
     } catch (error) {
@@ -74,7 +72,7 @@ function App() {
   };
 
   const handleKbSelect = (kbLabel) => {
-    setSelectedKb(kbLabel);  // Update selected KB to the actual label
+    setSelectedKb(kbLabel);
   };
 
   useEffect(() => {
@@ -95,10 +93,14 @@ function App() {
     return inlineProcessedContent;
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert("Response copied to clipboard!");
+  };
+
   return (
     <div className="app-container">
       
-      {/* KB Viewer */}
       <div className="kb-viewer">
         <h3>Select KB</h3>
         
@@ -106,9 +108,9 @@ function App() {
           <p 
             key={index} 
             className={`kb-item ${selectedKb === item.label ? 'active' : ''}`} 
-            onClick={() => handleKbSelect(item.label)}  // Send actual label
+            onClick={() => handleKbSelect(item.label)}
           >
-            {item.displayName}  {/* Display user-friendly name */}
+            {item.displayName}
             {item.link && (
               <a href={item.link} target="_blank" rel="noopener noreferrer">
                 <i className="fas fa-external-link-alt" style={{ marginLeft: '10px' }}></i>
@@ -117,13 +119,11 @@ function App() {
           </p>
         ))}
 
-        {/* KB Description */}
         <div className="kb-description">
           <p><i>{kbDescriptions[selectedKb]}</i></p>
         </div>
       </div>
 
-      {/* Chat Area */}
       <div className="chat-container">
         <div className="title">
           <h1>Informal Interactive Proof Assistant</h1>
@@ -144,6 +144,13 @@ function App() {
                   >
                     {preprocessLatex(chat.answer)}
                   </ReactMarkdown>
+                  {/* Copy Icon for each response */}
+                  <FaCopy
+                    className="copy-icon"
+                    onClick={() => copyToClipboard(chat.answer)}
+                    title="Copy to clipboard"
+                    style={{ cursor: 'pointer', fontSize: '1.2em', marginTop: '8px' }}
+                  />
                 </div>
               </li>
             ))}
@@ -157,7 +164,7 @@ function App() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Enter your message..."
-            disabled={isLoading}  
+            disabled={isLoading}
           />
           <button onClick={handleSubmit} disabled={isLoading}>Send</button>
           {isLoading && (
