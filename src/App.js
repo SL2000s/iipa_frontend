@@ -47,10 +47,10 @@ function App() {
     setIsLoading(true);  
     try {
       const response = await submitPrompt(input, chatHistory, selectedKb);
-      setChatHistory([...chatHistory, { prompt: input, answer: response.answer }]);
+      setChatHistory([...chatHistory, { prompt: input, answer: response.answer, latexMacros: response.latex_macros }]);
       setInput('');
     } catch (error) {
-      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.' }]);
+      setChatHistory([...chatHistory, { prompt: input, answer: 'Error while processing the prompt.', latexMacros: {} }]);
     }
     setIsLoading(false);  
   };
@@ -140,7 +140,7 @@ function App() {
                   <strong>Assistant:</strong>
                   <ReactMarkdown 
                     remarkPlugins={[remarkMath]} 
-                    rehypePlugins={[rehypeKatex]}
+                    rehypePlugins={[[rehypeKatex, { macros: chat.latexMacros || {} }]]}
                   >
                     {preprocessLatex(chat.answer)}
                   </ReactMarkdown>
