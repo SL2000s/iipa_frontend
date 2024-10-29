@@ -6,6 +6,8 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import ClipLoader from "react-spinners/ClipLoader";  
 import { FaCopy } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane, faEnvelope, faArrowRight, faComment } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [input, setInput] = useState('');
@@ -165,16 +167,20 @@ function App() {
         </div>
 
         <div className="input-area">
-          <textarea
-            ref={inputRef}
-            className="input-textarea"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Enter your message..."
-            disabled={isLoading}
-          />
-          <button onClick={handleSubmit} disabled={isLoading}>Send</button>
+          <div className="input-wrapper">
+            <textarea
+              ref={inputRef}
+              className="input-textarea"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Enter your message..."
+              disabled={isLoading}
+            />
+            <button className="send-button" onClick={handleSubmit} disabled={isLoading}>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </div>
           {isLoading && (
             <div className="loading-spinner">
               <ClipLoader color={"#123abc"} loading={isLoading} size={50} />
