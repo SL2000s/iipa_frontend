@@ -9,6 +9,7 @@ import { FaCopy } from "react-icons/fa";
 
 function App() {
   const [input, setInput] = useState('');
+  const inputRef = useRef(null);
   const [kb, setKb] = useState([
     { label: 'lm_theory', displayName: 'LM Theory', link: 'http://127.0.0.1:8800' },
     { label: 'number_theory', displayName: 'Number Theory', link: '' },
@@ -74,6 +75,12 @@ function App() {
   const handleKbSelect = (kbLabel) => {
     setSelectedKb(kbLabel);
   };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     if (chatHistoryRef.current) {
@@ -159,6 +166,7 @@ function App() {
 
         <div className="input-area">
           <textarea
+            ref={inputRef}
             className="input-textarea"
             value={input}
             onChange={(e) => setInput(e.target.value)}
