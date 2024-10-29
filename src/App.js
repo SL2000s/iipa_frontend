@@ -7,7 +7,7 @@ import rehypeKatex from 'rehype-katex';
 import ClipLoader from "react-spinners/ClipLoader";  
 import { FaCopy } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faEnvelope, faArrowRight, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [input, setInput] = useState('');
@@ -107,6 +107,22 @@ function App() {
     alert("Response copied to clipboard!");
   };
 
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    adjustTextareaHeight();
+  };
+
+  const adjustTextareaHeight = () => {
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto'; // Reset height to auto to shrink if content is deleted
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`; // Set height based on scroll height
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight(); // Initial adjustment if there's default content
+  }, []);
+
   return (
     <div className="app-container">
       
@@ -172,10 +188,9 @@ function App() {
               ref={inputRef}
               className="input-textarea"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onChange={handleInputChange}
               placeholder="Enter your message..."
-              disabled={isLoading}
+              style={{ overflow: 'hidden' }} // Hide scrollbar for a cleaner look
             />
             <button className="send-button" onClick={handleSubmit} disabled={isLoading}>
               <FontAwesomeIcon icon={faArrowRight} />
