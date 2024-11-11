@@ -58,13 +58,6 @@ function App() {
     setIsLoading(false);  
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();  
-      handleSubmit();  
-    }
-  };
-
   const handleNewChat = () => {
     setChatHistory([]);
     setInput('');
@@ -107,9 +100,11 @@ function App() {
     alert("Response copied to clipboard!");
   };
 
-  const handleInputChange = (e) => {
-    setInput(e.target.value);
-    adjustTextareaHeight();
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();  
+      handleSubmit();  
+    }
   };
 
   const adjustTextareaHeight = () => {
@@ -118,6 +113,17 @@ function App() {
       inputRef.current.style.height = `${inputRef.current.scrollHeight}px`; // Set height based on scroll height
     }
   };
+
+  const handleInputChange = (e) => {
+    // if (e.key === 'Enter' && !e.shiftKey) {
+    //   e.preventDefault();  
+    //   handleSubmit();
+    // } else {
+    setInput(e.target.value);
+    adjustTextareaHeight();
+    // }
+  };
+
 
   useEffect(() => {
     adjustTextareaHeight(); // Initial adjustment if there's default content
@@ -188,6 +194,7 @@ function App() {
               ref={inputRef}
               className="input-textarea"
               value={input}
+              onKeyDown={handleKeyDown}
               onChange={handleInputChange}
               placeholder="Enter your message..."
               style={{ overflow: 'hidden' }} // Hide scrollbar for a cleaner look
