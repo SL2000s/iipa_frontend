@@ -42,6 +42,8 @@ function App() {
       setInput('Prove p_i given the context P_i.\n\np_i: UNDEFINED\nP_i: UNDEFINED');
     } else if (tactic === 'premisesRetrieval') {
       setInput('Create a list of all premises related to s_i.\n\ns_i: UNDEFINED');
+    } else if (tactic === 'empiricalVerification') {
+      setInput('Verify empirically that the statement p_i is true.\n\np_i: UNDEFINED');
     }
   };
 
@@ -216,6 +218,7 @@ function App() {
             <button onClick={() => chooseTactic('prove')} disabled={isLoading}>Prove</button>
             <button onClick={() => chooseTactic('proveWithinContext')} disabled={isLoading}>Prove In Context</button>
             <button onClick={() => chooseTactic('premisesRetrieval')} disabled={isLoading}>Search Premises</button>
+            <button onClick={() => chooseTactic('empiricalVerification')} disabled={isLoading}>Verify Empirically</button>
             <button onClick={() => chooseTactic('verifyEntailment')} disabled={isLoading}>Verify Entailment</button>
             <button onClick={() => chooseTactic('verifyStatement')} disabled={isLoading}>Verify Statement</button>
           </div>
