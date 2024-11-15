@@ -86,6 +86,7 @@
   border-radius: 10px;
   text-align: left;
   margin-bottom: 5px;
+  white-space: pre-wrap;
 }
 
 .response-bubble {
