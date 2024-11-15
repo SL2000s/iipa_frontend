@@ -47,6 +47,10 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [input]);
+
   const handleSubmit = async () => {
     if (input.trim() === "") return; 
     setIsLoading(true);  
@@ -117,15 +121,8 @@ function App() {
   };
 
   const handleInputChange = (e) => {
-    // if (e.key === 'Enter' && !e.shiftKey) {
-    //   e.preventDefault();  
-    //   handleSubmit();
-    // } else {
     setInput(e.target.value);
-    adjustTextareaHeight();
-    // }
   };
-
 
   useEffect(() => {
     adjustTextareaHeight(); // Initial adjustment if there's default content
