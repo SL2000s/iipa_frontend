@@ -164,10 +164,10 @@ function App() {
             {chatHistory.map((chat, index) => (
               <li key={index} className="chat-message">
                 <div className="prompt-bubble">
-                  <strong>You:</strong> {chat.prompt}
+                  {chat.prompt}
                 </div>
                 <div className="response-bubble">
-                  <strong>Assistant:</strong>
+                  {/* <strong>Assistant:</strong> */}
                   <ReactMarkdown 
                     remarkPlugins={[remarkMath]} 
                     rehypePlugins={[[rehypeKatex, { macros: chat.latexMacros || {} }]]}

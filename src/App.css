@@ -50,7 +50,7 @@
 }
 
 .chat-container {
-  width: 60%;
+  /* width: 60%; */
   border: 1px solid #ccc;
   border-radius: 0px;
   padding: 10px;
@@ -60,6 +60,7 @@
   flex-direction: column;
   flex: 1;
   display: flex;
+  align-items: center;
 }
 
 /* Chat history section */
@@ -69,6 +70,7 @@
   padding: 10px;
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
+  width: 65%;
 }
 
 .chat-history ul {
@@ -81,7 +83,8 @@
 }
 
 .prompt-bubble {
-  background-color: #d1e7dd;
+  /* background-color: #d1e7dd; */
+  background-color: #e7e7e7;
   padding: 10px;
   border-radius: 10px;
   text-align: left;
@@ -90,7 +93,8 @@
 }
 
 .response-bubble {
-  background-color: #e2e3e5;
+  /* background-color: #e2e3e5; */
+  background-color: #ffffff;
   padding: 10px;
   border-radius: 10px;
   text-align: left;
@@ -100,6 +104,7 @@
 .input-area {
   display: flex;
   align-items: center;
+  width: 65%;
 }
 
 .input-textarea {
@@ -143,6 +148,7 @@ button:hover {
 /* Command menu */
 .command-menu {
   margin-top: 10px;
+  align-items: center;
 }
 
 .command-menu button {
