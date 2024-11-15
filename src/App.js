@@ -196,7 +196,7 @@ function App() {
               onKeyDown={handleKeyDown}
               onChange={handleInputChange}
               placeholder="Enter your message..."
-              style={{ overflow: 'hidden' }} // Hide scrollbar for a cleaner look
+              // style={{ overflow: 'hidden' }} // Hide scrollbar for a cleaner look
             />
             <button className="send-button" onClick={handleSubmit} disabled={isLoading}>
               <FontAwesomeIcon icon={faArrowRight} />
