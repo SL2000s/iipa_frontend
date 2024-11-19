@@ -222,3 +222,19 @@ button:hover {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.code-block-container {
+  position: relative;
+}
+
+.code-block-container .copy-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.code-block-container:hover .copy-icon {
+  opacity: 1;
+}

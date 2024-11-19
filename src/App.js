@@ -125,8 +125,35 @@ function App() {
   };
 
   useEffect(() => {
-    adjustTextareaHeight(); // Initial adjustment if there's default content
+    adjustTextareaHeight();
   }, []);
+
+  const CodeBlock = ({ inline, className, children }) => {
+    const language = className ? className.replace('language-', '') : '';
+    const isCode = language && !inline;
+  
+    const copyCodeToClipboard = () => {
+      navigator.clipboard.writeText(children);
+      alert("Code copied to clipboard!");
+    };
+  
+    if (isCode) {
+      return (
+        <div className="code-block-container">
+          <pre className={className}>{children}</pre>
+          <FaCopy 
+            className="copy-icon"
+            onClick={copyCodeToClipboard}
+            title="Copy code"
+            style={{ cursor: 'pointer', fontSize: '1em', marginLeft: '10px' }}
+          />
+        </div>
+      );
+    }
+    
+    // Render inline math or block LaTeX as usual
+    return <code className={className}>{children}</code>;
+  };  
 
   return (
     <div className="app-container">
@@ -167,14 +194,13 @@ function App() {
                   {chat.prompt}
                 </div>
                 <div className="response-bubble">
-                  {/* <strong>Assistant:</strong> */}
                   <ReactMarkdown 
                     remarkPlugins={[remarkMath]} 
                     rehypePlugins={[[rehypeKatex, { macros: chat.latexMacros || {} }]]}
+                    components={{ code: CodeBlock }}
                   >
                     {preprocessLatex(chat.answer)}
                   </ReactMarkdown>
-                  {/* Copy Icon for each response */}
                   <FaCopy
                     className="copy-icon"
                     onClick={() => copyToClipboard(chat.answer)}
