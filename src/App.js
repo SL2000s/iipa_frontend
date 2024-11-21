@@ -204,7 +204,7 @@ function App() {
                   <FaCopy
                     className="copy-icon"
                     onClick={() => copyToClipboard(chat.answer)}
-                    title="Copy to clipboard"
+                    title="Copy answer"
                     style={{ cursor: 'pointer', fontSize: '1.2em', marginTop: '8px' }}
                   />
                 </div>
