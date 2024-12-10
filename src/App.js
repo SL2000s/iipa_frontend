@@ -24,7 +24,9 @@ function App() {
   const chatHistoryRef = useRef(null);
 
   const kbDescriptions = {
-    lm_theory: "LM Theory is a KB that focuses mathematical statements (definitions, axioms, lemmas, theorems, corollaries) about language models.",
+    lm_theory: `<i>LM Theory is a KB that focuses mathematical statements (definitions, axioms, lemmas, theorems, corollaries) about language models.<br><br>
+                
+                Expand LM Theory <a href="http://127.0.0.1:8800/contribute/add_paper" target="_blank" rel="noopener noreferrer">here</a>.</i>`,
     number_theory: "This KB is not implemented yet.",
     geometry: "This KB is not implemented yet."
   };
@@ -176,9 +178,9 @@ function App() {
           </p>
         ))}
 
-        <div className="kb-description">
-          <p><i>{kbDescriptions[selectedKb]}</i></p>
-        </div>
+      <div className="kb-description">
+        <p dangerouslySetInnerHTML={{ __html: kbDescriptions[selectedKb] }}></p>
+      </div>
       </div>
 
       <div className="chat-container">
